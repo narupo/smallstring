@@ -11,8 +11,10 @@ struct SsBufMB {
 #define IS_DUMMY_BUF (self->buf == ss_dummy_buf)
 
 void
-ss_buf_destory(SsBufMB *self) {
-    free(self->buf);
+ss_buf_mb_destroy(SsBufMB *self) {
+    if (!IS_DUMMY_BUF) {
+        free(self->buf);
+    }
     // free(self);  DO NOT FREE SELF
 }
 
@@ -120,6 +122,7 @@ ss_split_mb(const char *str, const char *seps) {
     }
 
     store();
+    ss_buf_mb_destroy(&buf);
 
     return ary;
 }
